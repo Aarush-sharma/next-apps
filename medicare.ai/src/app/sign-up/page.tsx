@@ -1,68 +1,104 @@
-'use client'
+import { Metadata } from "next"
+import Image from "next/image"
+import Link from "next/link"
 
-import React, { useState, ChangeEvent, FormEvent } from 'react';
-import {useCreateUserWithEmailAndPassword} from "react-firebase-hooks/auth"
-import{auth} from "@/auth/firebase/firebase-config"
-interface FormData {
-  username: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
+import { cn } from "@/lib/utils"
+import { buttonVariants } from "@/components/ui/button"
+import { UserAuthForm } from "@/components/ui/user-auth-form"
+
+export const metadata: Metadata = {
+  title: "Authentication",
+  description: "Authentication forms built using the components.",
 }
 
-const SignUpPage: React.FC = () => {
-  const[createUserWithEmailAndPassword] = useCreateUserWithEmailAndPassword(auth)
-  const [formData, setFormData] = useState<FormData>({
-    username: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
-  });
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
-  };
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try{
-      const res = await createUserWithEmailAndPassword(formData.email,formData.confirmPassword)
-      console.log({res})
-      
-    } catch (err){
-      console.error(err)
-    }
-    console.log(formData.email);
-  };
-
+export default function AuthenticationPage() {
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-900">
-      <form onSubmit={handleSubmit} className="bg-gray-800 text-white p-8 rounded shadow-md w-full max-w-md">
-        <h2 className="text-2xl mb-4 font-semibold">Sign Up</h2>
-        <div className="mb-4">
-          <label htmlFor="username" className="block text-gray-400 font-medium mb-2">Username</label>
-          <input type="text" id="username" name="username" value={formData.username} onChange={handleChange} placeholder="Enter your username" className="w-full border border-gray-600 rounded px-3 py-2 bg-gray-700 focus:outline-none focus:border-blue-500" />
+    <>
+      <div className="md:hidden">
+        <Image
+          src="/examples/authentication-light.png"
+          width={1280}
+          height={843}
+          alt="Authentication"
+          className="block dark:hidden"
+        />
+        <Image
+          src="/examples/authentication-dark.png"
+          width={1280}
+          height={843}
+          alt="Authentication"
+          className="hidden dark:block"
+        />
+      </div>
+      <div className="container relative hidden h-[800px] flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
+        <Link
+          href="/examples/authentication"
+          className={cn(
+            buttonVariants({ variant: "ghost" }),
+            "absolute right-4 top-4 md:right-8 md:top-8"
+          )}
+        >
+          Login
+        </Link>
+        <div className="relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r">
+          <div className="absolute inset-0 bg-zinc-900" />
+          <div className="relative z-20 flex items-center text-lg font-medium">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="mr-2 h-6 w-6"
+            >
+              <path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3" />
+            </svg>
+            Acme Inc
+          </div>
+          <div className="relative z-20 mt-auto">
+            <blockquote className="space-y-2">
+              <p className="text-lg">
+                &ldquo;This library has saved me countless hours of work and
+                helped me deliver stunning designs to my clients faster than
+                ever before.&rdquo;
+              </p>
+              <footer className="text-sm">Sofia Davis</footer>
+            </blockquote>
+          </div>
         </div>
-        <div className="mb-4">
-          <label htmlFor="email" className="block text-gray-400 font-medium mb-2">Email Address</label>
-          <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} placeholder="Enter your email" className="w-full border border-gray-600 rounded px-3 py-2 bg-gray-700 focus:outline-none focus:border-blue-500" />
+        <div className="lg:p-8">
+          <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
+            <div className="flex flex-col space-y-2 text-center">
+              <h1 className="text-2xl font-semibold tracking-tight">
+                Create an account
+              </h1>
+              <p className="text-sm text-muted-foreground">
+                Enter your email below to create your account
+              </p>
+            </div>
+            <UserAuthForm />
+            <p className="px-8 text-center text-sm text-muted-foreground">
+              By clicking continue, you agree to our{" "}
+              <Link
+                href="/terms"
+                className="underline underline-offset-4 hover:text-primary"
+              >
+                Terms of Service
+              </Link>{" "}
+              and{" "}
+              <Link
+                href="/privacy"
+                className="underline underline-offset-4 hover:text-primary"
+              >
+                Privacy Policy
+              </Link>
+              .
+            </p>
+          </div>
         </div>
-        <div className="mb-4">
-          <label htmlFor="password" className="block text-gray-400 font-medium mb-2">Password</label>
-          <input type="password" id="password" name="password" value={formData.password} onChange={handleChange} placeholder="Enter your password" className="w-full border border-gray-600 rounded px-3 py-2 bg-gray-700 focus:outline-none focus:border-blue-500" />
-        </div>
-        <div className="mb-6">
-          <label htmlFor="confirmPassword" className="block text-gray-400 font-medium mb-2">Confirm Password</label>
-          <input type="password" id="confirmPassword" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} placeholder="Confirm your password" className="w-full border border-gray-600 rounded px-3 py-2 bg-gray-700 focus:outline-none focus:border-blue-500" />
-        </div>
-        <button type="submit" className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600">Sign Up</button>
-      </form>
-    </div>
-  );
-};
-
-export default SignUpPage;
+      </div>
+    </>
+  )
+}
