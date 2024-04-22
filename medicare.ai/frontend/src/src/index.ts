@@ -1,5 +1,3 @@
-
-
 const nodemailer = require("nodemailer");
 require("dotenv").config()
 
@@ -15,22 +13,19 @@ const transporter = nodemailer.createTransport({
 });
 
 var otp = Math.floor(Math.random() * 9000) + 1000
-
-
-
-const sendmail ={
-  from: {
-    name:"medicare",
-    address:"aarushmrt@gmail.com"
-  }, // sender address
-  to: ["pixelwave.dms@gmail.com"], 
-  subject: `verification code is ${otp} `, 
-  text: "verification code", 
-  html: `<div><h1>${otp}</h1></div>`,
-}
-
-async function main() {
   
+
+async function main(email:string) {
+    const sendmail ={
+        from: {
+          name:"medicare",
+          address:"aarushmrt@gmail.com"
+        }, // sender address
+        to: [email], 
+        subject: `verification code is ${otp} `, 
+        text: "verification code", 
+        html: `<div><h1>${otp}</h1></div>`,
+      }
  try{
  await transporter.sendMail(sendmail)
  console.log("email sent")
@@ -38,5 +33,5 @@ async function main() {
   console.error(error)
  }
 }
-main();
 
+export {main}
