@@ -7,7 +7,7 @@ import { Icons } from "./icons";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import{main} from "@/src/index"
+
 const formSchema = z.object({
   email: z.string().min(2, {
     message: "email must be at least 2 characters.",
@@ -29,7 +29,7 @@ export function ProfileForm() {
   async function onSubmit(value: z.infer<typeof formSchema>) {
     setemail(value.email);
     setIsLoading(true);
-    main(email);
+   
     setTimeout(() => {
       setIsLoading(false);
       

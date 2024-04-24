@@ -15,13 +15,13 @@ const transporter = nodemailer.createTransport({
 var otp = Math.floor(Math.random() * 9000) + 1000
   
 
-async function main(email:string) {
+async function main() {
     const sendmail ={
         from: {
           name:"medicare",
           address:"aarushmrt@gmail.com"
         }, // sender address
-        to: [email], 
+        to: [""], 
         subject: `verification code is ${otp} `, 
         text: "verification code", 
         html: `<div><h1>${otp}</h1></div>`,
@@ -34,4 +34,4 @@ async function main(email:string) {
  }
 }
 
-export {main}
+export {main , otp}
